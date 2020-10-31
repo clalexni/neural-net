@@ -12,14 +12,14 @@
   4. number of iterations
 - run these two command lines
 ~~~
-chmod u+x neural_net.py
+chmod u+x main.py
 ~~~
 ~~~
-./neural_net.py [input1] [input2] [input3] [input4]
+./main.py [input1] [input2] [input3] [input4]
 ~~~
 - for example:
 ~~~
-./neural_net.py data/train2.dat data/test2.dat 0.3 400
+./main.py data/train2.dat data/test2.dat 0.3 400
 ~~~
 
 
