@@ -29,7 +29,7 @@ def parse_data(f):
 def LogisticLinearLearner(dataset, alpha=0.01, iteration=1000):
   """
   [Section 18.6.4]
-  return weight
+  print learning process for each iteration and return tuned weights
   """
   def sigmoid(x):
     """sigmoid activation function"""
@@ -37,7 +37,7 @@ def LogisticLinearLearner(dataset, alpha=0.01, iteration=1000):
 
   x = [ex[0:len(ex)-1] for ex in dataset.ts]  
   w = [0 for _ in range(len(dataset.col_names)-1)]
-
+  
   for i in range(iteration):
     k = i % len(dataset.ts)
     wx = sum([float(x[k][index]) * w[index] for index in range(len(w))])
@@ -46,13 +46,38 @@ def LogisticLinearLearner(dataset, alpha=0.01, iteration=1000):
     delta = float(dataset.ts[k][-1]) - s
     
     print('After iteration ', i + 1, ': ', end='')
-
+    
+    # gradient descent
     for wi in range(len(w)):
       w[wi] = w[wi] + alpha * delta * float(x[k][wi]) * ds
       print('w(', dataset.col_names[wi], ') = ', '{:.4f}'.format(w[wi]), ', ', sep='', end='')
 
     wx = sum([float(x[k][index]) * w[index] for index in range(len(w))])
     print('output = ', '{:.4f}'.format(sigmoid(wx)), sep='')
+
+  return w
+
+def accuracy_test(w, ds):
+  """
+  return the accuracy based on the test on the dataset ds
+  parameters:
+  w: list of tuned weights
+  ds: test set
+  """
+  def sigmoid(x):
+    """sigmoid activation function"""
+    return 1/(1+math.exp(-x))
+
+  x = [ex[0:len(ex)-1] for ex in ds.ts]
+  count = 0
+
+  for k in range(len(x)):
+    wx = sum([float(x[k][index]) * w[index] for index in range(len(w))])
+    output = 1 if sigmoid(wx) >= 0.5 else 0
+    if output == int(ds.ts[k][-1]):
+      count += 1
+
+  return '{:.1%}'.format(count/len(x))
 
 
 if __name__ == '__main__':
@@ -62,12 +87,12 @@ if __name__ == '__main__':
   iteration = int(sys.argv[4])
 
   train_ds = DataSet(*parse_data(train))
-  LogisticLinearLearner(train_ds, alpha, iteration)
+  test_ds = DataSet(*parse_data(test))
 
+  w = LogisticLinearLearner(train_ds, alpha, iteration)
 
-
-
-
+  print('\n\nAccuracy on training set (', len(train_ds.ts), ' instances): ', accuracy_test(w, train_ds), sep='')
+  print('Accuracy on test set (', len(test_ds.ts), ' instances): ', accuracy_test(w, test_ds), sep='')
 
 
 
