@@ -45,10 +45,15 @@ def LogisticLinearLearner(dataset, alpha=0.01, iteration=1000):
     ds = s * (1 - s)
     delta = float(dataset.ts[k][-1]) - s
     
-    print(s)
+    print('After iteration ', i + 1, ': ', end='')
+
     for wi in range(len(w)):
       w[wi] = w[wi] + alpha * delta * float(x[k][wi]) * ds
-    print(w)
+      print('w(', dataset.col_names[wi], ') = ', '{:.4f}'.format(w[wi]), ', ', sep='', end='')
+
+    wx = sum([float(x[k][index]) * w[index] for index in range(len(w))])
+    print('output = ', '{:.4f}'.format(sigmoid(wx)), sep='')
+
 
 if __name__ == '__main__':
   train = sys.argv[1]
