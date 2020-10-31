@@ -5,11 +5,24 @@
 
 ## Requirements:
 - Python 3.6
-- take arguments: 
+- the program takes 4 arguments: 
   1. training_file 
   2. test_file 
   3. learning_rate 
   4. number of iterations
+- run these two command lines
+~~~
+chmod u+x neural_net.py
+~~~
+~~~
+./neural_net.py [input1] [input2] [input3] [input4]
+~~~
+- for example:
+~~~
+./neural_net.py data/train2.dat data/test2.dat 0.3 400
+~~~
+
+
 
 
 ## Notes:
